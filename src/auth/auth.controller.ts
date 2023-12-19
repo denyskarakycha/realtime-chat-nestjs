@@ -1,6 +1,7 @@
-import { Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
+import { SignUpDto } from './dto/sign-up.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -8,7 +9,9 @@ export class AuthController {
 
   @ApiCreatedResponse()
   @Post('/signup')
-  signUp() {}
+  signUp(@Body() signUpDto: SignUpDto) {
+    return this.authService.signUp(signUpDto);
+  }
 
   @ApiOkResponse()
   @HttpCode(HttpStatus.OK)
