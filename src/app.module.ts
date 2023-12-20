@@ -4,11 +4,22 @@ import { UserModule } from './user/user.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ChatModule } from './chat/chat.module';
+import { EventsModule } from './events/events.module';
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [
     AuthModule,
     UserModule,
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => ({
+        uri: configService.get('MONGO_DATABASE'),
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      }),
+    }),
     ConfigModule.forRoot({
       envFilePath: [`.env.stage.${process.env.STAGE}`],
       isGlobal: true,
@@ -28,6 +39,7 @@ import { ChatModule } from './chat/chat.module';
       }),
     }),
     ChatModule,
+    EventsModule,
   ],
 })
 export class AppModule {}
