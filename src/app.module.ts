@@ -10,6 +10,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     UserModule,
     ConfigModule.forRoot({
       envFilePath: [`.env.stage.${process.env.STAGE}`],
+      isGlobal: true,
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],

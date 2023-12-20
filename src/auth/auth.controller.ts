@@ -9,12 +9,14 @@ export class AuthController {
 
   @ApiCreatedResponse()
   @Post('/signup')
-  signUp(@Body() signUpDto: SignUpDto) {
+  signUp(@Body() signUpDto: SignUpDto): Promise<void> {
     return this.authService.signUp(signUpDto);
   }
 
   @ApiOkResponse()
   @HttpCode(HttpStatus.OK)
   @Post('/login')
-  logIn() {}
+  logIn(@Body() logInDto: SignUpDto) {
+    return this.authService.logIn(logInDto);
+  }
 }
