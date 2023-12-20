@@ -7,14 +7,17 @@ import { JwtPayload } from '../interface/jwt-payload.interface';
 import { User } from 'src/user/entitys/user.entity';
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
+export class RefreshJwtStrategy extends PassportStrategy(
+  Strategy,
+  'jwt-refresh',
+) {
   constructor(
     private userService: UserService,
     private configService: ConfigService,
   ) {
     super({
-      secretOrKey: configService.get('JWT_SECRET'),
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      secretOrKey: configService.get('JWT_REFRESH_SECRET'),
+      jwtFromRequest: ExtractJwt.fromBodyField('refresh'),
     });
   }
 
