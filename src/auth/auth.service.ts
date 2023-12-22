@@ -10,7 +10,7 @@ import { LogInDto } from './dto/log-in.dto';
 import { JwtPayload } from './interface/jwt-payload.interface';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { User } from 'src/user/entitys/user.entity';
+import { User } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class AuthService {

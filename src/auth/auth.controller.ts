@@ -10,7 +10,7 @@ import { AuthService } from './auth.service';
 import { ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
 import { SignUpDto } from './dto/sign-up.dto';
 import { GetUser } from 'src/user/decorator/get-user.decorator';
-import { User } from 'src/user/entitys/user.entity';
+import { User } from 'src/user/entities/user.entity';
 import { RefreshJwtGuard } from './guard/refresh-jwt.guard';
 
 @Controller('auth')

@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ChatModule } from './chat/chat.module';
 import { EventsModule } from './events/events.module';
 import { MongooseModule } from '@nestjs/mongoose';
+import { AccountModule } from './account/account.module';
 
 @Module({
   imports: [
@@ -16,8 +17,6 @@ import { MongooseModule } from '@nestjs/mongoose';
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
         uri: configService.get('MONGO_DATABASE'),
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
       }),
     }),
     ConfigModule.forRoot({
@@ -40,6 +39,7 @@ import { MongooseModule } from '@nestjs/mongoose';
     }),
     ChatModule,
     EventsModule,
+    AccountModule,
   ],
 })
 export class AppModule {}

@@ -1,5 +1,5 @@
 import { DataSource, Repository } from 'typeorm';
-import { User } from '../entitys/user.entity';
+import { User } from '../entities/user.entity';
 import { ConflictException, Injectable } from '@nestjs/common';
 
 @Injectable()
@@ -16,7 +16,7 @@ export class UserRepository extends Repository<User> {
     return user;
   }
 
-  async createUser(email: string, hashedPassword: string): Promise<void> {
+  async createUser(email: string, hashedPassword: string): Promise<User> {
     const isExistUser = await this.findUser(email);
 
     if (isExistUser) {
@@ -28,6 +28,6 @@ export class UserRepository extends Repository<User> {
       password: hashedPassword,
     });
 
-    await this.save(user);
+    return await this.save(user);
   }
 }
