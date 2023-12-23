@@ -34,7 +34,7 @@ export class AuthService {
   ): Promise<{ accessToken: string; refreshToken: string }> {
     const { email, password } = logInDto;
 
-    const user = await this.userService.findUser(email);
+    const user = await this.userService.getUser(email);
 
     const isEqual = await bcrypt.compare(password, user.password);
     if (user && isEqual) {
@@ -51,7 +51,7 @@ export class AuthService {
   }
 
   async refreshToken(user: User): Promise<{ accessToken: string }> {
-    const isExistUser = await this.userService.findUser(user.email);
+    const isExistUser = await this.userService.getUser(user.email);
 
     if (!isExistUser) {
       throw new NotFoundException('User not Found');

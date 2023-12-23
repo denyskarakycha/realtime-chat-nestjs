@@ -9,9 +9,9 @@ import {
 import { AuthService } from './auth.service';
 import { ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
 import { SignUpDto } from './dto/sign-up.dto';
-import { GetUser } from 'src/user/decorator/get-user.decorator';
-import { User } from 'src/user/entities/user.entity';
 import { RefreshJwtGuard } from './guard/refresh-jwt.guard';
+import { User } from 'src/user/entities/user.entity';
+import { GetUser } from 'src/user/decorators/get-user.decorator';
 
 @Controller('auth')
 export class AuthController {

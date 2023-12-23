@@ -16,7 +16,7 @@ export class UserService {
     return this.accountService.createAccount(user);
   }
 
-  findUser(email: string): Promise<User> {
+  getUser(email: string): Promise<User> {
     return this.userRepository.findUser(email);
   }
 }

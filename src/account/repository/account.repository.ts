@@ -9,6 +9,12 @@ export class AccountRepository extends Repository<Account> {
     super(Account, dataSource.createEntityManager());
   }
 
+  async findAccount(user: User): Promise<Account> {
+    const account = await this.findOneBy({ user });
+
+    return account;
+  }
+
   async createAccount(user: User): Promise<void> {
     const account = this.create({
       user,

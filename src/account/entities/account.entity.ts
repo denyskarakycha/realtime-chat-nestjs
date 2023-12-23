@@ -1,4 +1,4 @@
-import { Conversation } from 'src/chat/entities/conversation.entity';
+import { Conversation } from '../../conversation/entities/conversation.entity';
 import { User } from 'src/user/entities/user.entity';
 import {
   Entity,
