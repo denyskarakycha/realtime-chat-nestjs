@@ -8,4 +8,7 @@ export class SignUpDto {
   @IsNotEmpty()
   @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/)
   password: string;
+
+  @Length(2, 10)
+  nickname: string;
 }

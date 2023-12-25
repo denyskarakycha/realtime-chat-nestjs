@@ -9,11 +9,21 @@ export class ConversationRepository extends Repository<Conversation> {
     super(Conversation, dataSource.createEntityManager());
   }
 
-  async getConversations(title: string) {
+  async getConversations(title: string): Promise<Conversation[]> {
     const query = this.createQueryBuilder('conversation');
     query.where({ title });
 
     return await query.getMany();
+  }
+
+  async getConversationById(id: string): Promise<Conversation> {
+    const conversation = await this.findOne({
+      where: {
+        id,
+      },
+    });
+
+    return conversation;
   }
 
   async createConversation(

@@ -1,6 +1,7 @@
 import { Conversation } from '../../conversation/entities/conversation.entity';
 import { User } from 'src/user/entities/user.entity';
 import {
+  Column,
   Entity,
   JoinColumn,
   JoinTable,
@@ -14,6 +15,9 @@ import {
 export class Account {
   @PrimaryGeneratedColumn('uuid')
   id: string;
+
+  @Column({ unique: true })
+  nickname: string;
 
   @OneToOne(() => User, (user) => user.account)
   @JoinColumn({ name: 'user_id' })

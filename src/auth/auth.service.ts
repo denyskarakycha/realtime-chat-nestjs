@@ -21,12 +21,12 @@ export class AuthService {
   ) {}
 
   async signUp(signUpDto: SignUpDto): Promise<void> {
-    const { email, password } = signUpDto;
+    const { email, password, nickname } = signUpDto;
 
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    return this.userService.createUser(email, hashedPassword);
+    return this.userService.createUser(email, hashedPassword, nickname);
   }
 
   async logIn(

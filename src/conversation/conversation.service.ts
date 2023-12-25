@@ -7,8 +7,12 @@ import { Account } from 'src/account/entities/account.entity';
 export class ConversationService {
   constructor(private conversationRepository: ConversationRepository) {}
 
-  getConversations(title: string) {
+  getConversations(title: string): Promise<Conversation[]> {
     return this.conversationRepository.getConversations(title);
+  }
+
+  getConversationById(id: string): Promise<Conversation> {
+    return this.conversationRepository.getConversationById(id);
   }
 
   createConversation(title: string, account: Account): Promise<Conversation> {

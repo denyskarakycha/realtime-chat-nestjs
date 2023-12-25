@@ -7,8 +7,8 @@ import { Account } from './entities/account.entity';
 export class AccountService {
   constructor(private accountRepository: AccountRepository) {}
 
-  createAccount(user: User): Promise<void> {
-    return this.accountRepository.createAccount(user);
+  createAccount(user: User, nickname: string): Promise<void> {
+    return this.accountRepository.createAccount(user, nickname);
   }
 
   getAccount(user: User): Promise<Account> {

@@ -10,10 +10,14 @@ export class UserService {
     private accountService: AccountService,
   ) {}
 
-  async createUser(email: string, hashedPassword: string): Promise<void> {
+  async createUser(
+    email: string,
+    hashedPassword: string,
+    nickname: string,
+  ): Promise<void> {
     const user = await this.userRepository.createUser(email, hashedPassword);
 
-    return this.accountService.createAccount(user);
+    return this.accountService.createAccount(user, nickname);
   }
 
   getUser(email: string): Promise<User> {

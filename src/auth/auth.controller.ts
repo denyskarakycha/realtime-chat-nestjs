@@ -12,6 +12,7 @@ import { SignUpDto } from './dto/sign-up.dto';
 import { RefreshJwtGuard } from './guard/refresh-jwt.guard';
 import { User } from 'src/user/entities/user.entity';
 import { GetUser } from 'src/user/decorators/get-user.decorator';
+import { LogInDto } from './dto/log-in.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -27,7 +28,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post('/login')
   logIn(
-    @Body() logInDto: SignUpDto,
+    @Body() logInDto: LogInDto,
   ): Promise<{ accessToken: string; refreshToken: string }> {
     return this.authService.logIn(logInDto);
   }

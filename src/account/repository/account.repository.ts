@@ -15,9 +15,10 @@ export class AccountRepository extends Repository<Account> {
     return account;
   }
 
-  async createAccount(user: User): Promise<void> {
+  async createAccount(user: User, nickname: string): Promise<void> {
     const account = this.create({
       user,
+      nickname,
     });
 
     await this.save(account);
