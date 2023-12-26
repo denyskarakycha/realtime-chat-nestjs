@@ -12,6 +12,8 @@ import { AccountService } from 'src/account/account.service';
 import { Dialog } from './schemas/dialog.schema';
 import { MessageContent } from './schemas/message-content.shema';
 import { Account } from 'src/account/entities/account.entity';
+import { DateService } from './utils/date.service';
+import { DateDto } from './dto/date.dto';
 
 @Injectable()
 export class MessageService {
@@ -22,14 +24,19 @@ export class MessageService {
     private dialogModel: Model<Dialog>,
     private conversationService: ConversationService,
     private accountService: AccountService,
+    private dateService: DateService,
   ) {}
 
   async sendMessageToConversation(
     id: string,
     messageDto: MessageDto,
     user: User,
+    dateDto: DateDto,
   ): Promise<ChatMessagesHistory | Dialog> {
-    const { text, date } = messageDto;
+    const { text } = messageDto;
+    const { date } = dateDto;
+
+    const dialogDate = this.dateService.getDialogDate(date);
 
     const conversation = await this.conversationService.getConversationById(id);
 
@@ -43,10 +50,10 @@ export class MessageService {
       });
 
     if (!isExistChatMessagesHistory) {
-      return this.createMessageHistory(message, conversation.id, date);
+      return this.createMessageHistory(message, conversation.id, dialogDate);
     }
 
-    return this.sendMessage(date, message, isExistChatMessagesHistory);
+    return this.sendMessage(dialogDate, message, isExistChatMessagesHistory);
   }
 
   private getMessageContent(
@@ -67,10 +74,10 @@ export class MessageService {
   private async createMessageHistory(
     message: MessageContent,
     chatId: string,
-    date: string,
+    dialogDate: string,
   ): Promise<ChatMessagesHistory> {
     const dialog = await this.dialogModel.create({
-      dialogDate: this.getDialogDate(date),
+      dialogDate: dialogDate,
       content: [message],
     });
 
@@ -78,7 +85,7 @@ export class MessageService {
       chatId: chatId,
       history: [
         {
-          dialogDate: this.getDialogDate(date),
+          dialogDate: dialogDate,
           dialogId: dialog._id,
         },
       ],
@@ -88,22 +95,22 @@ export class MessageService {
   }
 
   private async sendMessage(
-    date: string,
+    dialogDate: string,
     message: MessageContent,
     isExistChatMessagesHistory: ChatMessagesHistoryDocument,
   ): Promise<Dialog | ChatMessagesHistory> {
     const dialog = await this.dialogModel.findOne({
-      dialogDate: this.getDialogDate(date),
+      dialogDate: dialogDate,
     });
 
     if (!dialog) {
       const newDialog = await this.dialogModel.create({
-        dialogDate: this.getDialogDate(date),
+        dialogDate: dialogDate,
         content: [message],
       });
 
       isExistChatMessagesHistory.history.push({
-        dialogDate: this.getDialogDate(date),
+        dialogDate: dialogDate,
         dialogId: newDialog._id,
       });
 
@@ -113,15 +120,5 @@ export class MessageService {
     dialog.content.push(message);
 
     return await dialog.save();
-  }
-
-  private getDialogDate(date: string): string {
-    const messageDate = new Date(Number(date));
-
-    const day = messageDate.getDate();
-    const month = messageDate.getMonth() + 1;
-    const year = messageDate.getFullYear();
-
-    return `${day}:${month}:${year}`;
   }
 }

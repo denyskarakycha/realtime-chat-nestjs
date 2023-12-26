@@ -16,6 +16,7 @@ import { GetUser } from 'src/user/decorators/get-user.decorator';
 import { User } from 'src/user/entities/user.entity';
 import { Account } from 'src/account/entities/account.entity';
 import { GetConversationFilterDto } from './dto/get-conversations-filter.dto';
+import { Direct } from 'src/direct/entities/direct.entity';
 
 @Controller('chat')
 @UseGuards(JwtGuard)
@@ -48,5 +49,13 @@ export class ChatController {
     @Param('id') id: string,
   ): Promise<Conversation> {
     return this.chatService.addAccountToConversation(id, user);
+  }
+
+  @Post('/direct/:recipientId')
+  createDirect(
+    @GetUser() user: User,
+    @Param('id') recipientId: string,
+  ): Promise<Direct> {
+    return this.chatService.createDirect(user, recipientId);
   }
 }

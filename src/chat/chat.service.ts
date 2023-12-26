@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { ConversationService } from 'src/conversation/conversation.service';
 import { ConversationDto } from './dto/conversation.dto';
 import { Conversation } from 'src/conversation/entities/conversation.entity';
@@ -6,11 +6,13 @@ import { User } from 'src/user/entities/user.entity';
 import { AccountService } from 'src/account/account.service';
 import { Account } from 'src/account/entities/account.entity';
 import { GetConversationFilterDto } from './dto/get-conversations-filter.dto';
+import { DirectService } from 'src/direct/direct.service';
 
 @Injectable()
 export class ChatService {
   constructor(
     private conversationServise: ConversationService,
+    private directService: DirectService,
     private accountservice: AccountService,
   ) {}
 
@@ -32,7 +34,7 @@ export class ChatService {
   ): Promise<Conversation> {
     const { title } = conversationDto;
 
-    const account = await this.getAccount(user);
+    const account = await this.accountservice.getAccount(user);
 
     return this.conversationServise.createConversation(title, account);
   }
@@ -41,14 +43,22 @@ export class ChatService {
     id: string,
     user: User,
   ): Promise<Conversation> {
-    const account = await this.getAccount(user);
+    const account = await this.accountservice.getAccount(user);
 
     return this.conversationServise.addAccount(account, id);
   }
 
-  private async getAccount(user: User): Promise<Account> {
-    const account = await this.accountservice.getAccount(user);
+  async createDirect(user: User, recipientId: string) {
+    const sender = await this.accountservice.getAccount(user);
 
-    return account;
+    const isExistDirect = this.directService.getDirectByAccount(sender);
+
+    if (isExistDirect) {
+      throw new ConflictException('Direct exists!');
+    }
+
+    const recipient = await this.accountservice.getAccountById(recipientId);
+
+    return this.directService.createDirect(sender, recipient);
   }
 }

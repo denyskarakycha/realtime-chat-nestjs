@@ -14,4 +14,8 @@ export class AccountService {
   getAccount(user: User): Promise<Account> {
     return this.accountRepository.findAccount(user);
   }
+
+  getAccountById(id: string): Promise<Account> {
+    return this.accountRepository.findAccountById(id);
+  }
 }

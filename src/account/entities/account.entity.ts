@@ -1,3 +1,4 @@
+import { Direct } from 'src/direct/entities/direct.entity';
 import { Conversation } from '../../conversation/entities/conversation.entity';
 import { User } from 'src/user/entities/user.entity';
 import {
@@ -22,6 +23,22 @@ export class Account {
   @OneToOne(() => User, (user) => user.account)
   @JoinColumn({ name: 'user_id' })
   user: User;
+
+  @ManyToMany(() => Direct, (direct) => direct.members)
+  @JoinTable({
+    name: 'account_direct',
+    joinColumn: {
+      name: 'account_id',
+      referencedColumnName: 'id',
+      foreignKeyConstraintName: 'account_direct_account_id',
+    },
+    inverseJoinColumn: {
+      name: 'direct_id',
+      referencedColumnName: 'id',
+      foreignKeyConstraintName: 'account_direct_direct_id',
+    },
+  })
+  directs: Direct[];
 
   @OneToMany(() => Conversation, (conversation) => conversation.creator)
   createdConversations: Conversation[];

@@ -10,6 +10,7 @@ import {
 import { AuthModule } from 'src/auth/auth.module';
 import { AccountModule } from 'src/account/account.module';
 import { Dialog, DialogSchema } from './schemas/dialog.schema';
+import { DateService } from './utils/date.service';
 
 @Module({
   imports: [
@@ -22,7 +23,7 @@ import { Dialog, DialogSchema } from './schemas/dialog.schema';
     ]),
   ],
   controllers: [MessageController],
-  providers: [MessageService],
+  providers: [MessageService, DateService],
   exports: [MessageService],
 })
 export class MessageModule {}
