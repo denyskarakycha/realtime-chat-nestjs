@@ -13,9 +13,6 @@ export class MessageContent {
 
   @Prop()
   text: string;
-
-  @Prop()
-  time: string;
 }
 
 export const MessageContentSchema =

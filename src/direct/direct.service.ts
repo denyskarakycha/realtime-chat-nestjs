@@ -11,7 +11,18 @@ export class DirectService {
     return this.directRepository.createDirect(sender, recipient);
   }
 
-  async getDirectByAccount(sender: Account): Promise<Direct> {
-    return this.directRepository.findDirectByAccount(sender);
+  async getDirectByAccounts(
+    sender: Account,
+    recipient: Account,
+  ): Promise<Direct | null> {
+    return this.directRepository.findDirectByAccounts(sender, recipient);
+  }
+
+  async getDirectById(account: Account, id: string) {
+    return this.directRepository.getDirectById(account, id);
+  }
+
+  async getDirects(account: Account): Promise<Direct[]> {
+    return this.directRepository.getDirects(account);
   }
 }

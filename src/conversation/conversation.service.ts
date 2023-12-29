@@ -11,8 +11,8 @@ export class ConversationService {
     return this.conversationRepository.getConversations(title);
   }
 
-  getConversationById(id: string): Promise<Conversation> {
-    return this.conversationRepository.getConversationById(id);
+  getConversationById(account: Account, id: string): Promise<Conversation> {
+    return this.conversationRepository.getConversationById(account, id);
   }
 
   createConversation(title: string, account: Account): Promise<Conversation> {

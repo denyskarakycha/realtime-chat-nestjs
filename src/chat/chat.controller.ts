@@ -51,10 +51,15 @@ export class ChatController {
     return this.chatService.addAccountToConversation(id, user);
   }
 
+  @Get('/directs')
+  getDirects(@GetUser() user: User): Promise<Direct[]> {
+    return this.chatService.getDirects(user);
+  }
+
   @Post('/direct/:recipientId')
   createDirect(
     @GetUser() user: User,
-    @Param('id') recipientId: string,
+    @Param('recipientId') recipientId: string,
   ): Promise<Direct> {
     return this.chatService.createDirect(user, recipientId);
   }

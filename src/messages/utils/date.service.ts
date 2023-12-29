@@ -2,13 +2,20 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class DateService {
-  getDialogDate(date: string) {
-    const timestamp = new Date(Number(date));
+  getPaginationDate(date: string | number) {
+    const startDate = new Date(date);
+    startDate.setDate(startDate.getDate() - 5);
 
-    const day = timestamp.getDate();
-    const month = timestamp.getMonth() + 1;
-    const year = timestamp.getFullYear();
+    const start = startDate.toISOString().split('T')[0];
 
-    return `${day}.${month}.${year}`;
+    const endDate = new Date(date);
+    endDate.setDate(endDate.getDate() + 5);
+
+    const end = endDate.toISOString().split('T')[0];
+
+    return {
+      start,
+      end,
+    };
   }
 }

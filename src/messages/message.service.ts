@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import {
   ChatMessagesHistory,
@@ -6,14 +6,15 @@ import {
 } from './schemas/chat-messages-history.shema';
 import { Model } from 'mongoose';
 import { MessageDto } from './dto/message.dto';
-import { ConversationService } from 'src/conversation/conversation.service';
 import { User } from 'src/user/entities/user.entity';
 import { AccountService } from 'src/account/account.service';
 import { Dialog } from './schemas/dialog.schema';
 import { MessageContent } from './schemas/message-content.shema';
 import { Account } from 'src/account/entities/account.entity';
 import { DateService } from './utils/date.service';
-import { DateDto } from './dto/date.dto';
+import { MessageQueryDto } from './dto/message-query.dto';
+import { ChatService } from 'src/chat/chat.service';
+import { HistoryQueryDto } from './dto/history-query.dto';
 
 @Injectable()
 export class MessageService {
@@ -22,50 +23,81 @@ export class MessageService {
     private chatMessagesHistoryModel: Model<ChatMessagesHistory>,
     @InjectModel(Dialog.name)
     private dialogModel: Model<Dialog>,
-    private conversationService: ConversationService,
+    private chatService: ChatService,
     private accountService: AccountService,
     private dateService: DateService,
   ) {}
 
-  async sendMessageToConversation(
+  async getChatMessagesHistory(
+    id: string,
+    user: User,
+    historyQueryDto: HistoryQueryDto,
+  ) {
+    const { chatType, date } = historyQueryDto;
+    const { start, end } = this.dateService.getPaginationDate(date);
+
+    console.log(1);
+    console.log(start, end);
+    const account = await this.accountService.getAccount(user);
+    const chat = await this.chatService.getChat(account, id, chatType);
+
+    const сhatMessagesHistory = await this.chatMessagesHistoryModel
+      .findOne({
+        chatId: chat.id,
+      })
+      .populate({
+        path: 'history.dialog',
+      })
+      .exec();
+
+    if (!сhatMessagesHistory) {
+      throw new NotFoundException('History not found');
+    }
+
+    if (date) {
+      return await this.dialogModel.find({
+        chatId: chat.id,
+        dialogDate: {
+          $gte: start,
+          $lte: end,
+        },
+      });
+    }
+
+    return сhatMessagesHistory;
+  }
+
+  async sendMessageToChat(
     id: string,
     messageDto: MessageDto,
     user: User,
-    dateDto: DateDto,
+    messageQueryDto: MessageQueryDto,
   ): Promise<ChatMessagesHistory | Dialog> {
     const { text } = messageDto;
-    const { date } = dateDto;
-
-    const dialogDate = this.dateService.getDialogDate(date);
-
-    const conversation = await this.conversationService.getConversationById(id);
+    const { chatType, date } = messageQueryDto;
 
     const account = await this.accountService.getAccount(user);
 
-    const message = this.getMessageContent(account, text, date);
+    const chat = await this.chatService.getChat(account, id, chatType);
+    const message = this.getMessageContent(account, text);
 
     const isExistChatMessagesHistory =
       await this.chatMessagesHistoryModel.findOne({
-        chatId: conversation.id,
+        chatId: chat.id,
       });
 
     if (!isExistChatMessagesHistory) {
-      return this.createMessageHistory(message, conversation.id, dialogDate);
+      return this.createMessageHistory(message, chat.id, date);
     }
 
-    return this.sendMessage(dialogDate, message, isExistChatMessagesHistory);
+    return this.sendMessage(date, message, isExistChatMessagesHistory);
   }
 
-  private getMessageContent(
-    account: Account,
-    text: string,
-    date: string,
-  ): MessageContent {
+  private getMessageContent(account: Account, text: string): MessageContent {
     const messageContent: MessageContent = {
       accountId: account.id,
       nickname: account.nickname,
       text: text,
-      time: date,
     };
 
     return messageContent;
@@ -74,10 +106,11 @@ export class MessageService {
   private async createMessageHistory(
     message: MessageContent,
     chatId: string,
-    dialogDate: string,
+    date: string,
   ): Promise<ChatMessagesHistory> {
     const dialog = await this.dialogModel.create({
-      dialogDate: dialogDate,
+      dialogDate: date,
+      chatId: chatId,
       content: [message],
     });
 
@@ -85,8 +118,7 @@ export class MessageService {
       chatId: chatId,
       history: [
         {
-          dialogDate: dialogDate,
-          dialogId: dialog._id,
+          dialog: dialog,
         },
       ],
     });
@@ -95,24 +127,22 @@ export class MessageService {
   }
 
   private async sendMessage(
-    dialogDate: string,
+    date: string,
     message: MessageContent,
     isExistChatMessagesHistory: ChatMessagesHistoryDocument,
   ): Promise<Dialog | ChatMessagesHistory> {
     const dialog = await this.dialogModel.findOne({
-      dialogDate: dialogDate,
+      dialogDate: date,
     });
 
     if (!dialog) {
       const newDialog = await this.dialogModel.create({
-        dialogDate: dialogDate,
+        dialogDate: date,
+        chatId: isExistChatMessagesHistory.chatId,
         content: [message],
       });
 
-      isExistChatMessagesHistory.history.push({
-        dialogDate: dialogDate,
-        dialogId: newDialog._id,
-      });
+      isExistChatMessagesHistory.history.push({ dialog: newDialog._id });
 
       return await isExistChatMessagesHistory.save();
     }

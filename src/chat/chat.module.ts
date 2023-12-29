@@ -10,5 +10,6 @@ import { DirectModule } from 'src/direct/direct.module';
   imports: [ConversationModule, AuthModule, AccountModule, DirectModule],
   controllers: [ChatController],
   providers: [ChatService],
+  exports: [ChatService],
 })
 export class ChatModule {}

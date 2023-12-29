@@ -16,10 +16,24 @@ export class ConversationRepository extends Repository<Conversation> {
     return await query.getMany();
   }
 
-  async getConversationById(id: string): Promise<Conversation> {
+  async getConversationById(
+    account: Account,
+    id: string,
+  ): Promise<Conversation> {
     const conversation = await this.findOne({
       where: {
         id,
+        participans: account,
+      },
+    });
+
+    return conversation;
+  }
+
+  async getConversationByAccount(account: Account): Promise<Conversation> {
+    const conversation = await this.findOne({
+      where: {
+        participans: account,
       },
     });
 

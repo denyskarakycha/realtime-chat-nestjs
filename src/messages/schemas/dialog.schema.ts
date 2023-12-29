@@ -10,6 +10,9 @@ export class Dialog {
   dialogDate: string;
 
   @Prop()
+  chatId: string;
+
+  @Prop()
   content: MessageContent[];
 }
 

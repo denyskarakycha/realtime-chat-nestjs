@@ -8,13 +8,8 @@ export class ChatMessagesHistory {
   @Prop()
   chatId: string;
 
-  @Prop([
-    {
-      dialogDate: { type: String, required: true },
-      dialogId: { type: Types.ObjectId, ref: 'Dialog' },
-    },
-  ])
-  history: { dialogDate: string; dialogId: Types.ObjectId }[];
+  @Prop({ type: [{ dialog: { type: Types.ObjectId, ref: 'Dialog' } }] })
+  history: { dialog: Types.ObjectId }[];
 }
 
 export const ChatMessagesHistorySchema =
