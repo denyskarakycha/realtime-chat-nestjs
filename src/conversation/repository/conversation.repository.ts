@@ -79,10 +79,17 @@ export class ConversationRepository extends Repository<Conversation> {
     const conversation = await this.findOne({
       where: {
         id,
-        participans: account,
       },
       relations: ['participans'],
     });
+
+    const isAccountInConversation = conversation.participans.some(
+      (participant) => participant.id === account.id,
+    );
+
+    if (!isAccountInConversation) {
+      throw new ConflictException('Account not exists in this chat');
+    }
 
     if (!conversation) {
       throw new NotFoundException('Conversation not found');
