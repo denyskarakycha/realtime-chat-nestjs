@@ -36,6 +36,10 @@ export class AuthService {
 
     const user = await this.userService.getUser(email);
 
+    if (!user) {
+      throw new UnauthorizedException('Check your login credentials');
+    }
+
     const isEqual = await bcrypt.compare(password, user.password);
     if (user && isEqual) {
       const payload: JwtPayload = { id: user.id, email: user.email };
