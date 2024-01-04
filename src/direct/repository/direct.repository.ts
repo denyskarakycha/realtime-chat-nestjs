@@ -38,10 +38,16 @@ export class DirectRepository extends Repository<Direct> {
   }
 
   async getDirects(account: Account): Promise<Direct[]> {
-    const directs = await this.find({
-      where: { members: account },
-      relations: ['members'],
-    });
+    // const directs = await this.find({
+    //   where: { members: account },
+    //   relations: ['members'],
+    // });
+
+    const directs = await this.createQueryBuilder('direct')
+      .innerJoin('direct.members', 'member')
+      .where('member.id = :accountId', { accountId: account.id })
+      .leftJoinAndSelect('direct.members', 'allMembers')
+      .getMany();
 
     return directs;
   }

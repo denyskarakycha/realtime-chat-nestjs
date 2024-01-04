@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { Conversation } from '../entities/conversation.entity';
 import { DataSource, Repository } from 'typeorm';
 import { Account } from 'src/account/entities/account.entity';
@@ -11,7 +16,12 @@ export class ConversationRepository extends Repository<Conversation> {
 
   async getConversations(title: string): Promise<Conversation[]> {
     const query = this.createQueryBuilder('conversation');
-    query.where({ title });
+    if (title) {
+      query.where({ title });
+    }
+
+    query.leftJoinAndSelect('conversation.creator', 'creator');
+    query.leftJoinAndSelect('conversation.participans', 'participans');
 
     return await query.getMany();
   }
@@ -25,7 +35,12 @@ export class ConversationRepository extends Repository<Conversation> {
         id,
         participans: account,
       },
+      relations: ['creator', 'participans'],
     });
+
+    if (!conversation) {
+      throw new NotFoundException('Conversation not found');
+    }
 
     return conversation;
   }
@@ -44,23 +59,33 @@ export class ConversationRepository extends Repository<Conversation> {
     title: string,
     account: Account,
   ): Promise<Conversation> {
-    const conversation = this.create({
-      title,
-      creator: account,
-      participans: [account],
-    });
-
-    return await this.save(conversation);
+    try {
+      const conversation = this.create({
+        title,
+        creator: account,
+        participans: [account],
+      });
+      return await this.save(conversation);
+    } catch (err) {
+      if (err.code === '23505') {
+        throw new ConflictException('Chat already exists');
+      } else {
+        throw new InternalServerErrorException();
+      }
+    }
   }
 
-  async getParticipans(id: string): Promise<Account[]> {
+  async getParticipans(account: Account, id: string): Promise<Account[]> {
     const conversation = await this.findOne({
-      where: { id },
+      where: {
+        id,
+        participans: account,
+      },
       relations: ['participans'],
     });
 
     if (!conversation) {
-      throw new NotFoundException('Conversation not exist');
+      throw new NotFoundException('Conversation not found');
     }
 
     return conversation.participans;
@@ -71,6 +96,14 @@ export class ConversationRepository extends Repository<Conversation> {
       where: { id },
       relations: ['creator', 'participans'],
     });
+
+    const isAccountInConversation = conversation.participans.some(
+      (participant) => participant.id === account.id,
+    );
+
+    if (isAccountInConversation) {
+      throw new ConflictException('Account already exists in this chat');
+    }
 
     conversation.participans.push(account);
 

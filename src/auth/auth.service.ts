@@ -11,6 +11,7 @@ import { JwtPayload } from './interface/jwt-payload.interface';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { User } from 'src/user/entities/user.entity';
+import { JwtResponse } from './dto/jwt-response.dto';
 
 @Injectable()
 export class AuthService {
@@ -18,6 +19,7 @@ export class AuthService {
     private userService: UserService,
     private jwtService: JwtService,
     private confgService: ConfigService,
+    // private ChatGateway: WsChatGateway,
   ) {}
 
   async signUp(signUpDto: SignUpDto): Promise<void> {
@@ -29,9 +31,7 @@ export class AuthService {
     return this.userService.createUser(email, hashedPassword, nickname);
   }
 
-  async logIn(
-    logInDto: LogInDto,
-  ): Promise<{ accessToken: string; refreshToken: string }> {
+  async logIn(logInDto: LogInDto): Promise<JwtResponse> {
     const { email, password } = logInDto;
 
     const user = await this.userService.getUser(email);
@@ -50,6 +50,21 @@ export class AuthService {
     }
   }
 
+  async getJwtPayload(
+    authorizationHeader: string | null,
+  ): Promise<JwtPayload | null> {
+    if (!authorizationHeader) {
+      return null;
+    }
+    const jwt = authorizationHeader.split(' ')[1];
+    try {
+      const jwtPayload: JwtPayload = this.jwtService.verify(jwt);
+      return jwtPayload;
+    } catch (err) {
+      return null;
+    }
+  }
+
   async refreshToken(user: User): Promise<{ accessToken: string }> {
     const isExistUser = await this.userService.getUser(user.email);
 
@@ -63,6 +78,8 @@ export class AuthService {
     };
 
     const accessToken: string = this.jwtService.sign(payload);
+
+    // this.ChatGateway.updateToken(isExistUser.id, accessToken);
 
     return { accessToken };
   }

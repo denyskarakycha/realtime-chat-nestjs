@@ -1,5 +1,10 @@
 import { DataSource, Repository } from 'typeorm';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { Account } from '../entities/account.entity';
 import { User } from 'src/user/entities/user.entity';
 
@@ -25,12 +30,24 @@ export class AccountRepository extends Repository<Account> {
     return account;
   }
 
-  async createAccount(user: User, nickname: string): Promise<void> {
-    const account = this.create({
-      user,
-      nickname,
-    });
+  async findAccountByNickname(nickname: string): Promise<Account> {
+    const account = await this.findOneBy({ nickname });
+    return account;
+  }
 
-    await this.save(account);
+  async createAccount(user: User, nickname: string): Promise<void> {
+    try {
+      const account = this.create({
+        user,
+        nickname,
+      });
+      await this.save(account);
+    } catch (err) {
+      if (err.code === '23505') {
+        throw new ConflictException('Nickname already exists');
+      } else {
+        throw new InternalServerErrorException();
+      }
+    }
   }
 }

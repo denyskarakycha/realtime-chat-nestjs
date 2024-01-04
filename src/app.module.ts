@@ -4,10 +4,11 @@ import { UserModule } from './user/user.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ChatModule } from './chat/chat.module';
-import { EventsModule } from './events/events.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AccountModule } from './account/account.module';
 import { MessageModule } from './messages/message.module';
+import { WsChatGateway } from './ws-chat/ws-chat.gateway';
+import { WsChatModule } from './ws-chat/ws-chat.module';
 
 @Module({
   imports: [
@@ -39,9 +40,10 @@ import { MessageModule } from './messages/message.module';
       }),
     }),
     ChatModule,
-    EventsModule,
     AccountModule,
     MessageModule,
+    WsChatModule,
   ],
+  providers: [WsChatGateway],
 })
 export class AppModule {}

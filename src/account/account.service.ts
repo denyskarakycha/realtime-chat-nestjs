@@ -18,4 +18,8 @@ export class AccountService {
   getAccountById(id: string): Promise<Account> {
     return this.accountRepository.findAccountById(id);
   }
+
+  getAccountByNickname(nickname: string): Promise<Account> {
+    return this.accountRepository.findAccountByNickname(nickname);
+  }
 }

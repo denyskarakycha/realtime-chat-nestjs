@@ -18,4 +18,10 @@ export class DateService {
       end,
     };
   }
+
+  getValidateDate(date: string | number) {
+    const currentDate = new Date().toISOString().split('T')[0];
+
+    return date === currentDate;
+  }
 }

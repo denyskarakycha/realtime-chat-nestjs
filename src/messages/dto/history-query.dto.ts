@@ -1,12 +1,9 @@
-import { IsDateString, IsEnum, IsOptional, Matches } from 'class-validator';
+import { IsEnum } from 'class-validator';
 import { Chat } from '../enums/chat.enum';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class HistoryQueryDto {
+  @ApiProperty({ example: 'CONVERSATION' })
   @IsEnum(Chat)
   chatType: Chat;
-
-  @IsDateString()
-  @Matches(/^\d{4}-\d{2}-\d{2}$/)
-  @IsOptional()
-  date?: string;
 }

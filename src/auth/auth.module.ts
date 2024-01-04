@@ -27,6 +27,6 @@ import { AccountModule } from 'src/account/account.module';
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy, RefreshJwtStrategy],
-  exports: [JwtStrategy, RefreshJwtStrategy, PassportModule],
+  exports: [JwtStrategy, RefreshJwtStrategy, PassportModule, AuthService],
 })
 export class AuthModule {}

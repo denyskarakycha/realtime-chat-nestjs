@@ -23,7 +23,7 @@ export class ConversationService {
     return this.conversationRepository.addAccount(account, id);
   }
 
-  getParticipans(id: string): Promise<Account[]> {
-    return this.conversationRepository.getParticipans(id);
+  getParticipans(account: Account, id: string): Promise<Account[]> {
+    return this.conversationRepository.getParticipans(account, id);
   }
 }

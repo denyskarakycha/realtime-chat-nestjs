@@ -1,6 +1,10 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { ConversationService } from 'src/conversation/conversation.service';
-import { ConversationDto } from './dto/conversation.dto';
+import { CreateConversationDto } from './dto/create-conversation.dto';
 import { Conversation } from 'src/conversation/entities/conversation.entity';
 import { User } from 'src/user/entities/user.entity';
 import { AccountService } from 'src/account/account.service';
@@ -26,8 +30,15 @@ export class ChatService {
     return this.conversationServise.getConversations(title);
   }
 
-  getConversationParticipans(id: string): Promise<Account[]> {
-    return this.conversationServise.getParticipans(id);
+  async getConversation(user: User, id: string): Promise<Conversation> {
+    const account = await this.accountservice.getAccount(user);
+    return this.conversationServise.getConversationById(account, id);
+  }
+
+  async getConversationParticipans(user: User, id: string): Promise<Account[]> {
+    const account = await this.accountservice.getAccount(user);
+
+    return this.conversationServise.getParticipans(account, id);
   }
 
   async getChat(
@@ -50,12 +61,16 @@ export class ChatService {
   }
 
   async createConvesation(
-    conversationDto: ConversationDto,
+    createConversationDto: CreateConversationDto,
     user: User,
   ): Promise<Conversation> {
-    const { title } = conversationDto;
+    const { title } = createConversationDto;
 
     const account = await this.accountservice.getAccount(user);
+
+    if (!account) {
+      throw new UnauthorizedException('Check your login credentials');
+    }
 
     return this.conversationServise.createConversation(title, account);
   }

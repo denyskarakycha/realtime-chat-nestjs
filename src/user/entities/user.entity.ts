@@ -14,4 +14,10 @@ export class User {
 
   @OneToOne(() => Account, (account) => account.user)
   account: Account;
+
+  // @CreateDateColumn()
+  // createdAt: Date;
+
+  // @UpdateDateColumn()
+  // updatedAt: Date;
 }

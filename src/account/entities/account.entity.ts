@@ -11,12 +11,15 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
 export class Account {
+  @ApiProperty({ example: 'uuid' })
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @ApiProperty({ example: 'Test' })
   @Column({ unique: true })
   nickname: string;
 
@@ -58,4 +61,10 @@ export class Account {
     },
   })
   conversations: Conversation[];
+
+  // @CreateDateColumn()
+  // createdAt: Date;
+
+  // @UpdateDateColumn()
+  // updatedAt: Date;
 }
