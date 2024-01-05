@@ -105,6 +105,8 @@ export class MessageService {
         chatId: chat.id,
       });
 
+    console.log(isExistChatMessagesHistory);
+
     if (!isExistChatMessagesHistory) {
       return this.createMessageHistory(message, chat.id, date);
     }
@@ -152,6 +154,7 @@ export class MessageService {
   ): Promise<Dialog | ChatMessagesHistory> {
     const dialog = await this.dialogModel.findOne({
       dialogDate: date,
+      chatId: isExistChatMessagesHistory.chatId,
     });
 
     if (!dialog) {
