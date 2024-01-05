@@ -1,0 +1,521 @@
+{
+	"info": {
+		"_postman_id": "0eed9d0a-8e8c-4aee-b221-be22b5ae68dc",
+		"name": "Realtime Chat",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29741792"
+	},
+	"item": [
+		{
+			"name": "Chat",
+			"item": [
+				{
+					"name": "Create Conversation",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImEyYzIyYTNhLWU1ZDItNGY1ZS1hMGY1LTY4MjM5OTQyOWFiYyIsImVtYWlsIjoiRW1pbHlAZ21haWwuY29tIiwiaWF0IjoxNzA0NDQ0NjI0LCJleHAiOjE3MDQ0NDgyMjR9.kG3svO-SW3GYF0eJaNeD0o-R1bt822bWT5MmBj-5OLE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"EmilyChat\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{prod_url}}/chat/convesation",
+							"host": [
+								"{{prod_url}}"
+							],
+							"path": [
+								"chat",
+								"convesation"
+							],
+							"query": [
+								{
+									"key": "title",
+									"value": "testConversation",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Conversations",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImEyYzIyYTNhLWU1ZDItNGY1ZS1hMGY1LTY4MjM5OTQyOWFiYyIsImVtYWlsIjoiRW1pbHlAZ21haWwuY29tIiwiaWF0IjoxNzA0NDQ0NjI0LCJleHAiOjE3MDQ0NDgyMjR9.kG3svO-SW3GYF0eJaNeD0o-R1bt822bWT5MmBj-5OLE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{prod_url}}/chat/convesations",
+							"host": [
+								"{{prod_url}}"
+							],
+							"path": [
+								"chat",
+								"convesations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Conversation By ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImEyYzIyYTNhLWU1ZDItNGY1ZS1hMGY1LTY4MjM5OTQyOWFiYyIsImVtYWlsIjoiRW1pbHlAZ21haWwuY29tIiwiaWF0IjoxNzA0NDQ0NjI0LCJleHAiOjE3MDQ0NDgyMjR9.kG3svO-SW3GYF0eJaNeD0o-R1bt822bWT5MmBj-5OLE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{prod_url}}/chat/convesation/d099b977-374d-43b4-b859-f85602ea4132",
+							"host": [
+								"{{prod_url}}"
+							],
+							"path": [
+								"chat",
+								"convesation",
+								"d099b977-374d-43b4-b859-f85602ea4132"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Participans",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImEyYzIyYTNhLWU1ZDItNGY1ZS1hMGY1LTY4MjM5OTQyOWFiYyIsImVtYWlsIjoiRW1pbHlAZ21haWwuY29tIiwiaWF0IjoxNzA0NDQ0NjI0LCJleHAiOjE3MDQ0NDgyMjR9.kG3svO-SW3GYF0eJaNeD0o-R1bt822bWT5MmBj-5OLE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{prod_url}}/chat/convesation/d099b977-374d-43b4-b859-f85602ea4132/participans",
+							"host": [
+								"{{prod_url}}"
+							],
+							"path": [
+								"chat",
+								"convesation",
+								"d099b977-374d-43b4-b859-f85602ea4132",
+								"participans"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Account to Conversation",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImIzMTIzNzEzLWI0M2EtNDgxOC1hY2IwLWEwY2MwN2ViYjQzNCIsImVtYWlsIjoiSmFja3NvbkBnbWFpbC5jb20iLCJpYXQiOjE3MDQ0NDQ4NTYsImV4cCI6MTcwNDQ0ODQ1Nn0.h2FV9YDY3Y4_QI5UXc66z5VQYA5iTbcVO0ecq8VkQLI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"NewTest\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{prod_url}}/chat/join/account/to/convesation/d099b977-374d-43b4-b859-f85602ea4132/",
+							"host": [
+								"{{prod_url}}"
+							],
+							"path": [
+								"chat",
+								"join",
+								"account",
+								"to",
+								"convesation",
+								"d099b977-374d-43b4-b859-f85602ea4132",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Directs",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImEyYzIyYTNhLWU1ZDItNGY1ZS1hMGY1LTY4MjM5OTQyOWFiYyIsImVtYWlsIjoiRW1pbHlAZ21haWwuY29tIiwiaWF0IjoxNzA0NDQ0NjI0LCJleHAiOjE3MDQ0NDgyMjR9.kG3svO-SW3GYF0eJaNeD0o-R1bt822bWT5MmBj-5OLE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{prod_url}}/chat/directs",
+							"host": [
+								"{{prod_url}}"
+							],
+							"path": [
+								"chat",
+								"directs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Directs",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImEyYzIyYTNhLWU1ZDItNGY1ZS1hMGY1LTY4MjM5OTQyOWFiYyIsImVtYWlsIjoiRW1pbHlAZ21haWwuY29tIiwiaWF0IjoxNzA0NDQ0NjI0LCJleHAiOjE3MDQ0NDgyMjR9.kG3svO-SW3GYF0eJaNeD0o-R1bt822bWT5MmBj-5OLE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{prod_url}}/chat/direct/c086eec9-1dc2-4642-9ab8-abb25fc23019",
+							"host": [
+								"{{prod_url}}"
+							],
+							"path": [
+								"chat",
+								"direct",
+								"c086eec9-1dc2-4642-9ab8-abb25fc23019"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "SignUp",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"Logan@gmail.com\",\n    \"password\": \"1#.QwE\",\n    \"nickname\": \"Logan\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{prod_url}}/auth/signup",
+							"host": [
+								"{{prod_url}}"
+							],
+							"path": [
+								"auth",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LogIn",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQwMTllMDg3LTM3NDktNGRiMS04OTdhLWRjNDZkZmMzNDM0MSIsImVtYWlsIjoidHJ1aGEzMkBnbWFpbC5jb20iLCJpYXQiOjE3MDMzMjk3MDksImV4cCI6MTcwMzMzMzMwOX0.55J0twCPvZwBH3pIDD5lbVN-dZvX6vvFLFlLZIgEZls",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"Emily@gmail.com\",\n    \"password\": \"1#.QwE\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{prod_url}}/auth/login",
+							"host": [
+								"{{prod_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQ1OWY5YmM2LTE5ZTEtNDcwMS1iY2MxLTViYjgzNGJlOTkzZiIsImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwiaWF0IjoxNzA0MjI3MjM2LCJleHAiOjE3MDQ4MzIwMzZ9.WUSDLt2YeHBzY6yfFnp9mOhZhdElIxgR9rDKVZ6n0Mo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/auth/refresh",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auth",
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Message",
+			"item": [
+				{
+					"name": "Send Message",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImEyYzIyYTNhLWU1ZDItNGY1ZS1hMGY1LTY4MjM5OTQyOWFiYyIsImVtYWlsIjoiRW1pbHlAZ21haWwuY29tIiwiaWF0IjoxNzA0NDQ4NjM3LCJleHAiOjE3MDQ0NTIyMzd9.HxefyhwT75nLA_p2WNtwDKEqMUcsXhx9c4fsNdzEaUg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"text\": \"Okay Jackson!\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{prod_url}}/messages/to/chat/8b148656-5452-45ae-b634-9343f0d1b6b4/?chatType=DIRECT&date=2024-01-05",
+							"host": [
+								"{{prod_url}}"
+							],
+							"path": [
+								"messages",
+								"to",
+								"chat",
+								"8b148656-5452-45ae-b634-9343f0d1b6b4",
+								""
+							],
+							"query": [
+								{
+									"key": "chatType",
+									"value": "DIRECT"
+								},
+								{
+									"key": "date",
+									"value": "2024-01-05"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Message History",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImEyYzIyYTNhLWU1ZDItNGY1ZS1hMGY1LTY4MjM5OTQyOWFiYyIsImVtYWlsIjoiRW1pbHlAZ21haWwuY29tIiwiaWF0IjoxNzA0NDQ1Mjc1LCJleHAiOjE3MDQ0NDg4NzV9.DVtefwMiJZyU0wnfuPgVnNfzhRFdW9mDyaZUYQIWYCs",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{prod_url}}/messages/history/chat/d099b977-374d-43b4-b859-f85602ea4132/?chatType=CONVERSATION",
+							"host": [
+								"{{prod_url}}"
+							],
+							"path": [
+								"messages",
+								"history",
+								"chat",
+								"d099b977-374d-43b4-b859-f85602ea4132",
+								""
+							],
+							"query": [
+								{
+									"key": "chatType",
+									"value": "CONVERSATION"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Dialogs",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImEyYzIyYTNhLWU1ZDItNGY1ZS1hMGY1LTY4MjM5OTQyOWFiYyIsImVtYWlsIjoiRW1pbHlAZ21haWwuY29tIiwiaWF0IjoxNzA0NDQ1Mjc1LCJleHAiOjE3MDQ0NDg4NzV9.DVtefwMiJZyU0wnfuPgVnNfzhRFdW9mDyaZUYQIWYCs",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{prod_url}}/messages/dialogs/chat/d099b977-374d-43b4-b859-f85602ea4132/?chatType=CONVERSATION&searchDate=2024-01-05",
+							"host": [
+								"{{prod_url}}"
+							],
+							"path": [
+								"messages",
+								"dialogs",
+								"chat",
+								"d099b977-374d-43b4-b859-f85602ea4132",
+								""
+							],
+							"query": [
+								{
+									"key": "chatType",
+									"value": "CONVERSATION"
+								},
+								{
+									"key": "searchDate",
+									"value": "2024-01-05"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
