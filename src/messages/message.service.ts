@@ -105,8 +105,6 @@ export class MessageService {
         chatId: chat.id,
       });
 
-    console.log(isExistChatMessagesHistory);
-
     if (!isExistChatMessagesHistory) {
       return this.createMessageHistory(message, chat.id, date);
     }

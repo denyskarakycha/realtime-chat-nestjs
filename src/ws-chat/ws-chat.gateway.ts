@@ -118,8 +118,11 @@ export class WsChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   private isUserInRoom(client: Socket, chatId: string) {
-    const room = client.rooms[chatId];
+    const room = client.rooms;
+    if (room.has(chatId)) {
+      return true;
+    }
 
-    return room !== undefined;
+    return false;
   }
 }
